@@ -1,0 +1,12 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch jo",
+            "request": "launch",
+            "mainClass": "jo",
+            "vmArgs": "--module-path C:/Users/ingma/Desktop/pianobase/javafx-sdk-21.0.6/lib --add-modules javafx.controls"
+        }
+    ]
+}
