@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Piano Dashboard</title>
+  <style>
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+      padding: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Piano Dashboard</h1>
+  <button onclick="loadPianos()">Laad Piano's</button>
+  <div id="result"></div>
+
+  <script>
+    async function loadPianos() {
+      try {
+        const response = await fetch('/api/pianos');
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const pianos = await response.json();
+        displayPianos(pianos);
+      } catch (error) {
+        document.getElementById("result").innerHTML = "Fout bij het laden van piano's: " + error;
+      }
+    }
+
+    function displayPianos(pianos) {
+      if (pianos.length === 0) {
+        document.getElementById("result").innerHTML = "Geen piano's gevonden.";
+        return;
+      }
+      let html = "<h2>Lijst met piano's:</h2><table>";
+      html += "<tr><th>Serial Number</th><th>Model</th><th>Merk</th><th>Bouwjaar</th></tr>";
+      pianos.forEach(piano => {
+        html += `<tr>
+                  <td>${piano.serialNumber}</td>
+                  <td>${piano.model}</td>
+                  <td>${piano.merk}</td>
+                  <td>${piano.bouwjaar}</td>
+                 </tr>`;
+      });
+      html += "</table>";
+      document.getElementById("result").innerHTML = html;
+    }
+  </script>
+</body>
+</html>
