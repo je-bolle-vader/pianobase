@@ -216,6 +216,17 @@ public class Main{
         }
     }
 
+    public static void assignCustomerToPiano(String pianoSerial, Customer customer, PianoTechnician technician) {
+        Piano piano = technician.getPianoBySerialNumber(pianoSerial);
+        if (piano != null) {
+            piano.setCustomer(customer);         // Verbind de klant met de piano
+            piano.setCustomerIndatabase();         // Werk de database bij met de gekoppelde klant
+            System.out.println("Customer " + customer.getName() + " successfully assigned to piano " + pianoSerial);
+        } else {
+            System.out.println("Piano with serial number " + pianoSerial + " not found.");
+        }
+    }
+
     public static void main(String[] args) {// Database configuratie
         
         // Probeer verbinding te maken
@@ -234,6 +245,8 @@ public class Main{
         loadCustomersFromDatabase(technician); // Laad klanten uit de database
         loadIndividualPartListsFromDatabase(technician); // Laad onderhoudslijsten uit de database
 
+       
+
 
 
         while (true) {
@@ -245,9 +258,8 @@ public class Main{
             System.out.println("5. Add Customer");
             System.out.println("6. View Customer Info");
             System.out.println("7. Add Individual Part List to Piano");
-//            System.out.println("7. View Latest Individual Part List for a Piano");
             System.out.println("8. View Latest Individual Part List for a Piano");
-//            System.out.println("9. Assign Customer to Piano");
+            System.out.println("9. Assign Customer to Piano");
             System.out.println("11. Add Repair");
             System.out.println("12. Add Tuning");
             System.out.println("13. View All Repairs");
@@ -449,18 +461,33 @@ public class Main{
                     // Dit kan een databasequery zijn of een methode in de PianoTechnician-klasse
                     break;
                 
-                case 9:
-                    /*System.out.print("Enter piano serial number: ");
-                    String pianoSerialToAssign = scanner.nextLine();
-                    System.out.print("Enter customer name: ");
+                case 9://9. Assign Customer to Piano
+                   technician.viewAllPianosOnlyNameAndId();
+                    System.out.print("Enter piano serial number to edit: ");
+                    String serialToEditx = scanner.nextLine();
+                    ArrayList<Customer> menssen = new ArrayList<>();
+                    for (Piano pianox : technician.getPianos()) {
+                        Customer customery = pianox.getCustomer();
+                        if (customery != null) {
+                            System.out.println(customery); // toString() geeft alle gegevens weer
+                            menssen.add(customery);
+                        }
+                    }
+                    System.out.print("Enter customer name to assign: ");
                     String customerNameToAssign = scanner.nextLine();
-                    System.out.print("Enter customer contact: ");
-                    String customerContactToAssign = scanner.nextLine();
-                    Customer customerToAssign = new Customer(customerNameToAssign, customerContactToAssign);
-                    technician.assignCustomerToPiano(pianoSerialToAssign, customerToAssign);
-                    break;*/
 
-               
+                    // Zoek in de ArrayList naar een customer met dezelfde naam
+                    Customer gekoozenCustomer = null;
+                    for (Customer cust : menssen) {
+                        if (cust.getName().equalsIgnoreCase(customerNameToAssign)) {
+                            gekoozenCustomer = cust;
+                            break;
+                        }
+                    }
+
+                    assignCustomerToPiano(serialToEditx, gekoozenCustomer, technician);
+                    
+
                 
                 case 11://add repair
                     //maak hier code die laat zien wekle pianos er zijn met weke ids
@@ -469,8 +496,7 @@ public class Main{
                     System.out.print("Enter piano serial number for repair: ");
                     String repairPianoSerial = scanner.nextLine();
                     
-                    System.out.print("Enter repair date (YYYY-MM-DD): ");
-                    String repairDate = scanner.nextLine();
+                    String repairDate ="";
                     
                     System.out.print("Enter time spent (hours): ");
                     double repairTimeSpent = scanner.nextDouble();
@@ -508,7 +534,7 @@ public class Main{
                     break;
 
                     
-                case 12: // add tuning (stembeurt)
+                case 12:// add tuning (stembeurt)
                     
                     // Laat de beschikbare piano's zien
                     technician.viewAllPianosOnlyNameAndId();
@@ -518,8 +544,7 @@ public class Main{
                     System.out.print("Enter piano serial number for tuning: ");
                     String tuningPianoSerial = scanner.nextLine();
                     
-                    System.out.print("Enter tuning date (YYYY-MM-DD): ");
-                    String tuningDate = scanner.nextLine();
+                    String tuningDate ="";
                     
                     System.out.print("Enter time spent (hours): ");
                     double tuningTimeSpent = scanner.nextDouble();
