@@ -1,10 +1,13 @@
+//nog de comands om het te runnen
+//javac -cp ".;C:\Users\ingma\Desktop\pianobase\sqlite-jdbc-3.49.1.0.jar" Main.java
+//java -cp ".;C:\Users\ingma\Desktop\pianobase\sqlite-jdbc-3.49.1.0.jar" Main
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import java.time.LocalDate;
-// import java.time.format.DateTimeParseException;
-// import java.time.DayOfWeek;
+
 
 import java.sql.*;
 
